@@ -19,10 +19,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> members  = em.createQuery("select m from Member m", Member.class)
+            List<Team> teams  = em.createQuery("select t from Member m join m.team t", Team.class)
                     .getResultList();
 
-            members.get(0).setAge(20);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
