@@ -23,7 +23,6 @@ public class JpaMain {
                     .getResultList();
 
             members.get(0).setAge(20);
-
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
