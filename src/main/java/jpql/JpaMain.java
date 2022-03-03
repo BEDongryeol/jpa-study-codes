@@ -31,8 +31,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select index(t.members) From Team t";
-            em.createQuery(query, Integer.class).getResultList().forEach(System.out::println);
+            String query = "select function('group_concat', m.userName) From Member m";
+            em.createQuery(query, String.class).getResultList().forEach(System.out::println);
 
             tx.commit();
         } catch (Exception e) {
