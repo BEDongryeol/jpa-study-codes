@@ -12,7 +12,7 @@ public class JpaMain {
         tx.begin();
         try {
             Member member = new Member();
-            member.setUserName(null);
+            member.setUserName("관리자");
             member.setAge(60);
             em.persist(member);
 
@@ -23,8 +23,12 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-
-            String query = "select coalesce(m.userName, '이름없는 회원') from Member m";
+            /*
+               이름이 관리자이면 null을 반환한다.
+               아니면 m.userName 반환
+               -> 관리자 이름을 숨길 때 사용할 수 있다.
+             */
+            String query = "select nullif(m.userName, '관리자') from Member m";
             em.createQuery(query, String.class).getResultList().forEach(System.out::println);
 
             tx.commit();
