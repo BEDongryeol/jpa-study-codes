@@ -19,9 +19,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Team> teams  = em.createQuery("select t from Member m join m.team t", Team.class)
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10)
                     .getResultList();
 
+            System.out.println(resultList.size());
+            resultList.forEach(System.out::println);
 
             tx.commit();
         } catch (Exception e) {
