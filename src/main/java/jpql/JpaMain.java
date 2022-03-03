@@ -26,12 +26,12 @@ public class JpaMain {
             em.persist(member1);
 
             member.addTeam(team);
-//            member1.addTeam(team);
+            member1.addTeam(team);
 
             em.flush();
             em.clear();
 
-            String query = "select size(t.members) From Team t";
+            String query = "select index(t.members) From Team t";
             em.createQuery(query, Integer.class).getResultList().forEach(System.out::println);
 
             tx.commit();
