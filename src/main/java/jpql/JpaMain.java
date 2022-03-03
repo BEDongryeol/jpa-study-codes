@@ -18,7 +18,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+            List<Member> resultList = em.createQuery("select m from Member m left join m.team t on t.name = :name", Member.class)
+                    .setParameter("name", "testName")
                     .setFirstResult(1)
                     .setMaxResults(10)
                     .getResultList();
