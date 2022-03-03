@@ -13,35 +13,43 @@ public class JpaMain {
         tx.begin();
         try {
 
-            Team team = new Team();
-            team.setName("OneTeam");
-            em.persist(team);
+            Team teamA = new Team();
+            teamA.setName("팀A");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("팀A");
+            em.persist(teamB);
 
             Member member = new Member();
-            member.setUserName("관리자");
+            member.setUserName("회원1");
             member.setAge(60);
             em.persist(member);
 
             Member member1 = new Member();
-            member1.setUserName("member2");
+            member1.setUserName("회원2");
             member1.setAge(20);
             em.persist(member1);
 
-            member.addTeam(team);
-            member1.addTeam(team);
+            Member member2 = new Member();
+            member2.setUserName("회원3");
+            member2.setAge(27);
+            em.persist(member2);
+
+            member.addTeam(teamA);
+            member1.addTeam(teamA);
+            member2.addTeam(teamB);
 
             em.flush();
             em.clear();
 
             System.out.println("=============testing=============");
 
+            String query = "select m from Member m";
+            List<Member> result = em.createQuery(query, Member.class).getResultList();
 
-//            String query = "select t.members from Team t";
-            String query = "select m.userName from Team t inner join t.members m";
-            List<String> result = em.createQuery(query, String.class).getResultList();
-
-            for (Object o : result) {
-                System.out.println(o);
+            for (Member mem : result) {
+                System.out.println(mem.getUserName() + " : " + mem.getTeam().getName());
             }
 
             tx.commit();
