@@ -13,19 +13,24 @@ public class JpaMain {
         try {
             Member member = new Member();
             member.setUserName("member1");
-            member.setAge(10);
+            member.setAge(60);
             em.persist(member);
+
+            Member member1 = new Member();
+            member1.setUserName("member2");
+            member1.setAge(20);
+            em.persist(member1);
+
             em.flush();
             em.clear();
 
-            List<Member> resultList = em.createQuery("select m from Member m left join m.team t on t.name = :name", Member.class)
-                    .setParameter("name", "testName")
-                    .setFirstResult(1)
-                    .setMaxResults(10)
-                    .getResultList();
-
-            System.out.println(resultList.size());
-            resultList.forEach(System.out::println);
+            String query =  "select " +
+                                "case when m.age <= 10 then '학생요금' " +
+                                "     when m.age >= 60 then '경로요금' " +
+                                "     else '일반요금' " +
+                                "end " +
+                            "from Member m";
+            em.createQuery(query, String.class).getResultList().forEach(System.out::println);
 
             tx.commit();
         } catch (Exception e) {
