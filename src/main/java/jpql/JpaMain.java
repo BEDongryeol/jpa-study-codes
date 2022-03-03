@@ -45,7 +45,7 @@ public class JpaMain {
 
             System.out.println("=============testing=============");
 
-            String query = "select m from Member m";
+            String query = "select m from Member m join fetch m.team";
             List<Member> result = em.createQuery(query, Member.class).getResultList();
 
             for (Member mem : result) {
