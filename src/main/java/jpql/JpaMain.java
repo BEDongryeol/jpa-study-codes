@@ -24,34 +24,35 @@ public class JpaMain {
             Member member = new Member();
             member.setUserName("회원1");
             member.setAge(60);
+            member.addTeam(teamA);
             em.persist(member);
 
             Member member1 = new Member();
             member1.setUserName("회원2");
             member1.setAge(20);
+            member1.addTeam(teamA);
             em.persist(member1);
 
             Member member2 = new Member();
             member2.setUserName("회원3");
             member2.setAge(27);
-            em.persist(member2);
-
-            member.addTeam(teamA);
-            member1.addTeam(teamA);
             member2.addTeam(teamB);
+            em.persist(member2);
+            System.out.println("======team add======");
 
             em.flush();
             em.clear();
 
             System.out.println("=============testing=============");
+            // FLUSH 자동 호출
+            int count = em.createQuery("update Member m set m.age = 20")
+                            .executeUpdate();
 
-            List<Member> members = em.createNamedQuery("Member.findByTeam", Member.class)
-                            .setParameter("team", teamA)
-                            .getResultList();
+            System.out.println(member.getAge());
+            System.out.println(member1.getAge());
+            System.out.println(member2.getAge());
 
-            for (Member member3 : members) {
-                System.out.println(member3);
-            }
+            System.out.println(count);
 
             tx.commit();
         } catch (Exception e) {
