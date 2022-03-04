@@ -45,12 +45,13 @@ public class JpaMain {
 
             System.out.println("=============testing=============");
 
-            String query = "select m from Member m where m.team = :team";
-            List<Member> members = em.createQuery(query, Member.class)
-                    .setParameter("team", teamA)
-                    .getResultList();
+            List<Member> members = em.createNamedQuery("Member.findByTeam", Member.class)
+                            .setParameter("team", teamA)
+                            .getResultList();
 
-            members.forEach(System.out::println);
+            for (Member member3 : members) {
+                System.out.println(member3);
+            }
 
             tx.commit();
         } catch (Exception e) {
